@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto y reservas | Miramar Hotel Boutique{% endblock %}
+{% block meta_description %}Reserva tu habitación en Miramar Hotel Boutique, Huanchaco. Consulta disponibilidad por formulario, WhatsApp o visítanos frente al mar.{% endblock %}
+
+{% block content %}
+<section class="bg-navy text-white">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+        <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-lime-300" data-hero-item style="--hero-i:0"><span aria-hidden="true">✦</span> Contacto & reservas</p>
+        <h1 class="mt-3 max-w-2xl font-display text-4xl leading-tight sm:text-5xl" data-hero-item style="--hero-i:1">Tu estadía empieza con un mensaje</h1>
+        <p class="mt-4 max-w-xl text-sm leading-relaxed text-white/75" data-hero-item style="--hero-i:2">Cuéntanos tus fechas, cuántos viajan y qué habitación te gustaría. Te respondemos con disponibilidad y tarifas en menos de 24 horas.</p>
+        <div data-hero-item style="--hero-i:3" class="mt-6 flex flex-wrap gap-3">
+            <a href="https://wa.me/51949218640?text=Hola%20Miramar%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener" class="rounded-full bg-[#25d366] px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-white hover:brightness-95">WhatsApp directo →</a>
+            <a href="#reserva" class="rounded-full border border-white/40 px-6 py-3 text-[11px] font-bold uppercase tracking-wider hover:bg-white/10">Reservar ↓</a>
+        </div>
+    </div>
+</section>
+
+<section data-reveal-group="100" class="mx-auto -mt-0 grid max-w-6xl gap-4 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    {% for c in [
+        {'icon':'📍','title':'Dónde estamos','value':'Av. La Rivera 245, Huanchaco','hint':'Trujillo, La Libertad · Perú'},
+        {'icon':'📞','title':'Teléfono','value':'+51 949 218 640','hint':'Lun a dom · 8:00 a 22:00'},
+        {'icon':'📧','title':'Correo','value':'reservas@miramarhotel.pe','hint':'Respondemos en menos de 24 h'},
+        {'icon':'🕘','title':'Recepción','value':'Check-in desde las 15:00','hint':'Check-out hasta las 12:00'}
+    ] %}
+    <div data-reveal class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-lime-50 text-xl" aria-hidden="true">{{ c.icon }}</div>
+        <h2 class="mt-3 text-sm font-bold text-navy">{{ c.title }}</h2>
+        <p class="mt-1 text-sm text-slate-700">{{ c.value }}</p>
+        <p class="text-xs text-slate-500">{{ c.hint }}</p>
+    </div>
+    {% endfor %}
+</section>
+
+<section class="mx-auto grid max-w-6xl gap-6 px-6 pb-16 lg:grid-cols-2" id="reserva">
+    <div data-reveal="left" class="self-start rounded-2xl border border-slate-100 bg-white p-7 shadow-sm">
+        <h2 class="font-display text-3xl text-navy">Solicita tu reserva</h2>
+        <p class="mt-1 text-sm text-slate-500">Completa el formulario y te contactaremos para confirmar.</p>
+        {% if error %}
+        <div class="mt-5 rounded-xl bg-red-50 p-4 text-sm text-red-800" data-notification role="alert">{{ error }}</div>
+        {% endif %}
+        {% if sent %}
+        <div class="mt-5 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-800" data-notification role="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">✓</span> ¡Gracias, {{ sender_name }}! Recibimos tu solicitud y te escribiremos pronto con la disponibilidad.</div>
+        {% endif %}
+        <form method="post" action="{{ url_for('contact.contact') }}#reserva" class="mt-5 space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+                <label class="block text-xs font-semibold">
+                    <span>Nombre *</span>
+                    <input type="text" name="name" autocomplete="name" value="{{ request.form.get('name', '') }}" required class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+                </label>
+                <label class="block text-xs font-semibold">
+                    <span>Celular *</span>
+                    <input type="tel" name="mobile" autocomplete="tel" inputmode="tel" value="{{ request.form.get('mobile', '') }}" required class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+                </label>
+            </div>
+            <label class="block text-xs font-semibold">
+                <span>Correo</span>
+                <input type="email" name="email" autocomplete="email" value="{{ request.form.get('email', '') }}" class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+            </label>
+            <label class="block text-xs font-semibold">
+                <span>¿Qué necesitas?</span>
+                <select name="subject" class="mt-2 block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm font-normal outline-none focus:border-field">
+                    <option>Reserva de habitación</option>
+                    <option>Consulta de disponibilidad</option>
+                    <option>Eventos y celebraciones</option>
+                    <option>Otro</option>
+                </select>
+            </label>
+            <label class="block text-xs font-semibold">
+                <span>Mensaje *</span>
+                <textarea name="message" rows="5" required placeholder="Cuéntanos las fechas de llegada y salida, número de huéspedes y la habitación que te interesa..." class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-normal outline-none placeholder:text-slate-400 focus:border-field focus:ring-2 focus:ring-field/20">{{ request.form.get('message', '') }}</textarea>
+            </label>
+            <button class="w-full rounded-full bg-navy py-3.5 text-sm font-bold text-white transition hover:bg-navy-dark" type="submit">Enviar solicitud →</button>
+            <p class="text-center text-[11px] text-slate-500">Al enviar aceptas que te contactemos para gestionar tu reserva.</p>
+        </form>
+    </div>
+
+    <div data-reveal="right" class="flex flex-col gap-6">
+        <div class="overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
+            <iframe title="Mapa de Miramar Hotel Boutique en Huanchaco" src="https://www.openstreetmap.org/export/embed.html?bbox=-79.135%2C-8.090%2C-79.103%2C-8.069&layer=mapnik&marker=-8.0796%2C-79.1189"
+                class="h-72 w-full" loading="lazy"></iframe>
+            <div class="flex items-center justify-between bg-white p-4 text-sm">
+                <p class="font-semibold text-navy"><span aria-hidden="true">📍</span> Huanchaco, Trujillo</p>
+                <a class="font-bold text-field-dark hover:underline" href="https://www.openstreetmap.org/?mlat=-8.0796&mlon=-79.1189#map=15/-8.0796/-79.1189" target="_blank" rel="noopener">Cómo llegar →</a>
+            </div>
+        </div>
+
+        <div class="rounded-2xl bg-cream p-6">
+            <h3 class="font-display text-2xl text-navy">¿Prefieres reservar directo?</h3>
+            <p class="mt-1 text-sm text-slate-600">Escríbenos por WhatsApp y te ayudamos a elegir la mejor habitación para tus fechas.</p>
+            <a href="https://wa.me/51949218640?text=Hola%20Miramar%2C%20quiero%20reservar" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 rounded-full bg-field px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-white transition hover:bg-field-dark">Abrir WhatsApp →</a>
+        </div>
+
+        <div class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <h3 class="text-sm font-bold text-navy">Preguntas frecuentes</h3>
+            <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold">¿El desayuno está incluido?</summary><p class="mt-1 text-slate-600">Sí, todas las tarifas incluyen desayuno buffet artesanal.</p></details>
+            <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold">¿Cómo puedo pagar?</summary><p class="mt-1 text-slate-600">Aceptamos tarjeta, transferencia y pago en recepción.</p></details>
+            <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold">¿Puedo cancelar mi reserva?</summary><p class="mt-1 text-slate-600">Sí, sin costo hasta 48 horas antes de la llegada.</p></details>
+            <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold">¿Aceptan mascotas?</summary><p class="mt-1 text-slate-600">En habitaciones seleccionadas, con un suplemento por estadía.</p></details>
+        </div>
+    </div>
+</section>
+{% endblock %}

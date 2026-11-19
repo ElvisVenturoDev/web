@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Miramar Hotel Boutique | Descanso frente al mar{% endblock %}
+{% block meta_description %}Hotel boutique en Huanchaco, Trujillo. Habitaciones con vista al mar, desayuno artesanal, piscina y suites con terraza privada.{% endblock %}
+
+{% block content %}
+{% include "shared/_carousel.html" %}
+
+{% include "shared/_values.html" %}
+
+<section class="mx-auto max-w-7xl px-6 py-20 lg:px-8" aria-labelledby="featured-title">
+    <div data-reveal class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-field">Nuestras habitaciones</p>
+            <h2 id="featured-title" class="mt-3 font-display text-4xl font-semibold text-navy sm:text-5xl">Elige tu forma de descansar</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-6 text-slate-600">Desde una habitación cálida con vista al jardín hasta una suite con terraza privada frente al Pacífico. Todas incluyen desayuno y acceso a la piscina.</p>
+        </div>
+        <a href="{{ url_for('products.products') }}" class="inline-flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-wider text-navy transition hover:text-field">Ver todas las habitaciones <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for room in rooms %}
+        <article class="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-soft transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl" data-featured-card>
+            <div class="aspect-[4/3] overflow-hidden bg-cream">
+                <img class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="{{ room.image }}" alt="{{ room.alt }}" width="600" height="450" loading="lazy">
+            </div>
+            <div class="p-6">
+                <div class="flex items-center justify-between gap-3">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-field">{{ room.detail }}</p>
+                    <strong class="product-price text-sm">S/ {{ '%.0f' | format(room.price) }}</strong>
+                </div>
+                <h3 class="mt-2 font-display text-2xl font-semibold text-navy transition-colors duration-300 group-hover:text-field">{{ room.name }}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-500">{{ room.description }}</p>
+                <div class="mt-5 flex items-center justify-between gap-3">
+                    <span class="text-xs text-slate-500">por noche · desayuno incluido</span>
+                    <a href="{{ url_for('contact.contact') }}#reserva" class="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-xs font-bold text-white transition hover:bg-navy-dark">Reservar <span aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="historia" class="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center lg:px-8" aria-labelledby="origin-title">
+    <div data-reveal="left">
+        <p class="text-xs font-bold uppercase tracking-[0.25em] text-field">La casa</p>
+        <h2 id="origin-title" class="mt-3 font-display text-4xl font-semibold leading-tight text-navy sm:text-5xl">Una casa abierta al mar y a la calma</h2>
+        <p class="mt-6 text-base leading-7 text-slate-600">Miramar nació como una casa de familia en Huanchaco y hoy abre sus puertas como hotel boutique. Conservamos la madera, los patios y esa sensación de estar en casa, con la comodidad de un servicio pensado para descansar.</p>
+        <p class="mt-4 text-base leading-7 text-slate-600">Cada habitación tiene su propio carácter. Cada mañana huele a café y pan recién hecho. Y cada atardecer tiene un lugar reservado frente al Pacífico.</p>
+        <div class="mt-8 grid max-w-md grid-cols-3 gap-4">
+            <div class="rounded-2xl bg-white p-4 text-center shadow-soft">
+                <p class="font-display text-3xl text-field">6</p>
+                <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Habitaciones</p>
+            </div>
+            <div class="rounded-2xl bg-white p-4 text-center shadow-soft">
+                <p class="font-display text-3xl text-field">4.9</p>
+                <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Puntuación</p>
+            </div>
+            <div class="rounded-2xl bg-white p-4 text-center shadow-soft">
+                <p class="font-display text-3xl text-field">2 min</p>
+                <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">A la playa</p>
+            </div>
+        </div>
+    </div>
+
+    <div data-reveal="right" class="relative">
+        <img class="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl" src="{{ url_for('static', filename='img/experience.jpg') }}" alt="Piscina del hotel frente al océano entre palmeras" width="900" height="675" loading="lazy">
+        <div class="absolute -bottom-6 -left-4 max-w-xs rounded-2xl bg-white p-5 shadow-xl sm:-left-8">
+            <p class="font-display text-3xl text-field">Siempre</p>
+            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-navy">Atardeceres frente al mar</p>
+        </div>
+    </div>
+</section>
+
+<section class="bg-cream py-20" aria-labelledby="experience-title">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div data-reveal class="mx-auto max-w-2xl text-center">
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-field">Más que una habitación</p>
+            <h2 id="experience-title" class="mt-3 font-display text-4xl font-semibold text-navy sm:text-5xl">Pequeños rituales de estadía</h2>
+            <p class="mt-4 text-sm leading-6 text-slate-600">Desayuno en la terraza, una tarde de piscina, un masaje al caer la tarde. Todo cerca, todo sin prisa.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+            <article data-reveal class="group overflow-hidden rounded-3xl bg-white shadow-soft">
+                <img class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ url_for('static', filename='img/lobby.jpg') }}" alt="Fachada y piscina iluminada del hotel al caer la noche" width="700" height="525" loading="lazy">
+                <div class="p-6">
+                    <h3 class="font-display text-2xl text-navy">La casa al caer la tarde</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-500">La piscina se enciende, el mar se escucha de fondo y la noche empieza sin prisa.</p>
+                </div>
+            </article>
+            <article data-reveal class="group overflow-hidden rounded-3xl bg-white shadow-soft">
+                <img class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ url_for('static', filename='img/hero-3.jpg') }}" alt="Cena servida en el restaurante del hotel" width="700" height="525" loading="lazy">
+                <div class="p-6">
+                    <h3 class="font-display text-2xl text-navy">Cocina del norte</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-500">Pescado fresco, productos locales y una carta que cambia con la temporada.</p>
+                </div>
+            </article>
+            <article data-reveal class="group overflow-hidden rounded-3xl bg-white shadow-soft">
+                <img class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ url_for('static', filename='img/spa.jpg') }}" alt="Masaje relajante en el spa del hotel" width="700" height="525" loading="lazy">
+                <div class="p-6">
+                    <h3 class="font-display text-2xl text-navy">Spa & bienestar</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-500">Masajes con aceites naturales y una tina exterior para cerrar el día.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section data-reveal="zoom" class="mx-auto my-20 max-w-6xl px-6">
+    <figure class="rounded-3xl border border-slate-100 bg-white px-6 py-12 text-center shadow-soft sm:px-14">
+        <p class="font-display text-5xl italic text-lime-300" aria-hidden="true">“</p>
+        <blockquote class="mx-auto mt-2 max-w-2xl font-display text-2xl leading-snug text-navy sm:text-3xl">El lugar perfecto para desconectar: desayuno delicioso, habitaciones impecables y el sonido del mar todo el día.</blockquote>
+        <figcaption class="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Lucía G. · Estadía en Suite Miramar</figcaption>
+    </figure>
+</section>
+
+<section data-reveal="zoom" class="mx-6 mb-20 overflow-hidden rounded-3xl bg-navy px-6 py-14 text-center text-white sm:px-10 lg:mx-auto lg:max-w-7xl">
+    <p class="text-xs font-bold uppercase tracking-[0.25em] text-lime-200">Tu escapada empieza aquí</p>
+    <h2 class="mx-auto mt-4 max-w-2xl font-display text-4xl font-semibold sm:text-5xl">Reserva tu habitación frente al mar</h2>
+    <p class="mx-auto mt-5 max-w-xl text-sm leading-6 text-white/70">Cuéntanos tus fechas y el número de huéspedes. Te responderemos con disponibilidad y la mejor tarifa.</p>
+    <a href="{{ url_for('contact.contact') }}#reserva" class="mt-8 inline-flex items-center gap-2 rounded-full bg-field px-7 py-4 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-field-dark">Consultar disponibilidad <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script defer src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+{% endblock %}

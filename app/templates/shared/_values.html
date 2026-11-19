@@ -1,0 +1,14 @@
+{# Reutilizable: franja de servicios del hotel #}
+<section data-reveal-group="100" class="relative z-20 mx-auto -mt-8 grid w-[calc(100%-3rem)] max-w-5xl grid-cols-1 gap-0 rounded-2xl bg-white shadow-[0_7px_24px_rgba(27,49,80,0.07)] sm:grid-cols-2 lg:grid-cols-4" aria-label="Servicios de Miramar">
+    {% for v in [
+        {'icon': '☕', 'title': 'Desayuno artesanal', 'text': 'Productos locales servidos cada mañana.'},
+        {'icon': '🌊', 'title': 'Frente al mar', 'text': 'Playa de Huanchaco a pocos pasos.'},
+        {'icon': '🏊', 'title': 'Piscina & terraza', 'text': 'Un espacio para desconectar del todo.'},
+        {'icon': '📶', 'title': 'WiFi de alta velocidad', 'text': 'Conectado si lo necesitas, libre si no.'}
+    ] %}
+    <article data-reveal class="flex items-center gap-3 border-b border-slate-100 p-4 last:border-0 sm:border-r sm:last:border-r-0 lg:[&:nth-child(2)]:border-r">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-field/40 text-xl text-field" aria-hidden="true">{{ v.icon }}</span>
+        <div><strong class="block text-xs text-navy">{{ v.title }}</strong><p class="mt-1 text-[11px] leading-snug text-slate-500">{{ v.text }}</p></div>
+    </article>
+    {% endfor %}
+</section>

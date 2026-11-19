@@ -1,0 +1,28 @@
+# MySQL 8 compartido entre la web Flask y la futura app JavaFX.
+# Uso: docker compose up -d
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: miramar-mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=-05:00
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root-change-me}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-miramar}
+      MYSQL_USER: ${MYSQL_USER:-miramar_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - miramar_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root-change-me}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  miramar_mysql_data:

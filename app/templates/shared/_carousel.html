@@ -1,0 +1,149 @@
+{#
+  Hero principal de la página de inicio.
+  El carrusel vive dentro del hero para que la propuesta del hotel y las
+  imágenes se vean apenas se entra al sitio.
+#}
+{% set carousel_slides = [
+    {
+        'image': url_for('static', filename='img/hero-1.jpg'),
+        'alt': 'Piscina frente al mar del hotel Miramar al atardecer',
+        'kicker_key': 'hero.kicker1',
+        'kicker': 'Huanchaco · Perú',
+        'title_key': 'hero.title1',
+        'title': 'Donde el mar',
+        'title_span_key': 'hero.titleSpan1',
+        'title_span': 'te invita a quedarte.',
+        'text_key': 'hero.text1',
+        'text': 'Un hotel boutique frente al Pacífico, con habitaciones luminosas, desayuno artesanal y la calma que buscabas.',
+        'primary_href': url_for('products.products'),
+        'primary_key': 'hero.cta1',
+        'primary': 'Ver habitaciones',
+        'secondary_href': url_for('contact.contact'),
+        'secondary_key': 'hero.ctaAlt1',
+        'secondary': 'Reservar ahora'
+    },
+    {
+        'image': url_for('static', filename='img/hero-2.jpg'),
+        'alt': 'Piscina y palmeras del hotel durante el atardecer',
+        'kicker_key': 'hero.kicker2',
+        'kicker': 'Descanso con vista',
+        'title_key': 'hero.title2',
+        'title': 'Amanece frente',
+        'title_span_key': 'hero.titleSpan2',
+        'title_span': 'al Pacífico.',
+        'text_key': 'hero.text2',
+        'text': 'Seis habitaciones únicas, terrazas privadas y espacios pensados para bajar el ritmo y disfrutar sin prisa.',
+        'primary_href': url_for('products.products'),
+        'primary_key': 'hero.cta2',
+        'primary': 'Explorar suites',
+        'secondary_href': url_for('contact.contact'),
+        'secondary_key': 'hero.ctaAlt2',
+        'secondary': 'Consultar disponibilidad'
+    },
+    {
+        'image': url_for('static', filename='img/hero-3.jpg'),
+        'alt': 'Mesa servida con platos y copas en el restaurante del hotel',
+        'kicker_key': 'hero.kicker3',
+        'kicker': 'Cocina & bienestar',
+        'title_key': 'hero.title3',
+        'title': 'Sabores del norte,',
+        'title_span_key': 'hero.titleSpan3',
+        'title_span': 'pausa de verdad.',
+        'text_key': 'hero.text3',
+        'text': 'Desayunos con productos locales, cenas frente al mar y un spa para cerrar el día como se merece.',
+        'primary_href': url_for('contact.contact'),
+        'primary_key': 'hero.cta3',
+        'primary': 'Planear mi estadía',
+        'secondary_href': url_for('products.products'),
+        'secondary_key': 'hero.ctaAlt3',
+        'secondary': 'Conocer habitaciones'
+    }
+] %}
+
+<section class="relative isolate flex min-h-[620px] items-center overflow-hidden bg-navy lg:min-h-[700px]"
+         aria-labelledby="hero-title"
+         aria-roledescription="carrusel"
+         data-carousel
+         data-carousel-interval="7000">
+
+    <div class="flex min-h-[620px] transition-transform duration-500 ease-out motion-reduce:transition-none" data-carousel-track>
+        {% for slide in carousel_slides %}
+        <article class="relative flex w-full shrink-0 items-center overflow-hidden"
+                 data-carousel-slide
+                 role="group"
+                 aria-roledescription="diapositiva"
+                 aria-label="{{ loop.index }} de {{ carousel_slides | length }}"{% if not loop.first %} inert aria-hidden="true"{% endif %}>
+            <img class="absolute inset-0 h-full w-full object-cover object-center"
+                 src="{{ slide.image }}"
+                 alt="{{ slide.alt }}"
+                 width="1600"
+                 height="900"{% if loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
+            <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-navy/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy/55 via-transparent to-white/10"></div>
+
+            <div class="relative mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
+                <div class="max-w-2xl text-white">
+                    <p data-hero-item style="--hero-i:0" class="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.28em] text-lime-200">
+                        <span class="h-px w-10 bg-lime-200" aria-hidden="true"></span>
+                        <span>{{ slide.kicker }}</span>
+                    </p>
+
+                    {% if loop.first %}
+                    <h1 id="hero-title" data-hero-item style="--hero-i:1" class="font-display text-5xl font-semibold leading-[0.98] sm:text-6xl lg:text-7xl">
+                        <span>{{ slide.title }}</span>
+                        <span class="mt-2 block font-display italic text-lime-200">{{ slide.title_span }}</span>
+                    </h1>
+                    {% else %}
+                    <h2 data-hero-item style="--hero-i:1" class="font-display text-5xl font-semibold leading-[0.98] sm:text-6xl lg:text-7xl">
+                        <span>{{ slide.title }}</span>
+                        <span class="mt-2 block font-display italic text-lime-200">{{ slide.title_span }}</span>
+                    </h2>
+                    {% endif %}
+
+                    <p data-hero-item style="--hero-i:2" class="mt-7 max-w-xl text-base leading-7 text-white/80 sm:text-lg">{{ slide.text }}</p>
+
+                    <div data-hero-item style="--hero-i:3" class="mt-9 flex flex-col gap-3 sm:flex-row">
+                        <a href="{{ slide.primary_href }}" class="inline-flex items-center justify-center gap-3 rounded-full bg-field px-7 py-4 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-field-dark">
+                            <span>{{ slide.primary }}</span>
+                            <span aria-hidden="true">→</span>
+                        </a>
+                        <a href="{{ slide.secondary_href }}" class="inline-flex items-center justify-center gap-3 rounded-full border border-white/40 bg-white/10 px-7 py-4 text-xs font-bold uppercase tracking-wider text-white backdrop-blur transition hover:bg-white/20">
+                            <span>{{ slide.secondary }}</span>
+                            <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 p-5 sm:p-7">
+        <div class="flex items-center gap-2" role="group" aria-label="Seleccionar diapositiva" data-carousel-indicators>
+            {% for slide in carousel_slides %}
+            <button type="button" class="group flex h-6 w-6 items-center justify-center rounded-full" data-carousel-to="{{ loop.index0 }}" aria-label="Ir a la diapositiva {{ loop.index }}"{% if loop.first %} data-active="true"{% endif %}>
+                <span class="h-2.5 w-2.5 rounded-full bg-white transition-all group-data-[active=true]:w-5 group-data-[active=true]:bg-lime-200" aria-hidden="true"></span>
+            </button>
+            {% endfor %}
+        </div>
+
+        <div class="flex items-center gap-3">
+            <p class="rounded-full bg-navy/35 px-4 py-2 text-xs font-bold tracking-wider text-white/75 backdrop-blur" data-carousel-counter aria-live="off">01 / {{ '%02d' % carousel_slides | length }}</p>
+            <button type="button" class="rounded-full border border-white/30 bg-navy/35 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur transition hover:bg-white hover:text-navy" data-carousel-toggle>Pausar</button>
+        </div>
+    </div>
+
+    <button type="button" class="absolute left-5 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-navy/40 text-white backdrop-blur transition hover:bg-white hover:text-navy lg:flex" data-carousel-prev aria-label="Diapositiva anterior">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+    </button>
+    <button type="button" class="absolute right-5 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-navy/40 text-white backdrop-blur transition hover:bg-white hover:text-navy lg:flex" data-carousel-next aria-label="Diapositiva siguiente">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+    </button>
+
+    <div data-hero-pop class="absolute bottom-10 right-10 hidden h-32 w-32 rotate-6 flex-col items-center justify-center rounded-full border-2 border-lime-200/80 bg-white/90 text-field shadow-xl lg:flex">
+        <strong class="font-display text-2xl">4.9</strong>
+        <span class="text-[10px] font-bold tracking-[0.2em]">HUÉSPEDES</span>
+    </div>
+
+    <p class="sr-only" aria-live="polite" aria-atomic="true" data-carousel-status></p>
+</section>

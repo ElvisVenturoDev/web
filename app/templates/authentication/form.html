@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% set current_mode = form_mode|default("register") %}
+{% set is_login = current_mode == "login" %}
+{% set is_edit = current_mode == "edit" %}
+
+{% block title %}{% if is_login %}Iniciar sesión{% elif is_edit %}Editar cuenta{% else %}Registrarse{% endif %} | Santa Clara{% endblock %}
+{% block meta_description %}{% if is_login %}Ingresa a tu cuenta de Santa Clara para revisar y agilizar tus pedidos.{% elif is_edit %}Actualiza los datos de tu cuenta de Santa Clara.{% else %}Crea tu cuenta en Santa Clara para hacer pedidos más rápido.{% endif %}{% endblock %}
+
+{% block content %}
+<section class="mx-auto max-w-3xl px-6 py-16">
+    {% if is_login %}
+    <h1 class="font-display text-4xl text-navy">Iniciar sesión</h1>
+    <p class="mt-2 text-sm text-slate-500">Ingresa con el correo y la contraseña de tu cuenta.</p>
+    {% elif is_edit %}
+    <h1 class="font-display text-4xl text-navy">Editar cuenta</h1>
+    <p class="mt-2 text-sm text-slate-500">Actualiza tus datos. Deja la contraseña vacía para conservarla.</p>
+    {% else %}
+    <h1 class="font-display text-4xl text-navy">Crear cuenta</h1>
+    <p class="mt-2 text-sm text-slate-500">Regístrate con tu correo para agilizar tus pedidos.</p>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% if messages %}
+      <div class="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" data-notification role="alert">
+        <ul class="list-disc space-y-1 pl-5">
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post"
+          action="{% if is_login %}{{ url_for('login.login') }}{% elif is_edit %}{{ url_for('auth.edit_account') }}{% else %}{{ url_for('auth.register') }}{% endif %}"
+          class="mt-6 space-y-4 rounded-2xl border border-slate-100 bg-white p-7 shadow-sm">
+        {% if not is_login %}
+        <label class="block text-xs font-semibold">
+            <span>Nombre completo *</span>
+            <input type="text" name="name" autocomplete="name" value="{{ form_data.get('name', '') }}" required class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+        </label>
+        {% endif %}
+        <label class="block text-xs font-semibold">
+            <span>Correo *</span>
+            <input type="email" name="email" autocomplete="email" value="{{ form_data.get('email', '') }}" required class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+        </label>
+        {% if not is_login %}
+        <label class="block text-xs font-semibold">
+            <span>Celular (opcional)</span>
+            <input type="tel" name="phone" inputmode="tel" value="{{ form_data.get('phone', '') }}" class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+        </label>
+        {% endif %}
+        <label class="block text-xs font-semibold">
+            <span>{% if is_edit %}Nueva contraseña (opcional){% else %}Contraseña *{% endif %}</span>
+            <input type="password" name="password" autocomplete="{% if is_login %}current-password{% else %}new-password{% endif %}" {% if not is_edit %}required{% endif %} class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+        </label>
+        {% if not is_login %}
+        <label class="block text-xs font-semibold">
+            <span>{% if is_edit %}Confirmar nueva contraseña{% else %}Confirmar contraseña *{% endif %}</span>
+            <input type="password" name="password_confirmation" autocomplete="new-password" {% if not is_edit %}required{% endif %} class="mt-2 block h-12 w-full rounded-xl border border-slate-300 px-4 text-sm font-normal outline-none focus:border-field focus:ring-2 focus:ring-field/20">
+        </label>
+        {% endif %}
+        <button class="w-full rounded-full bg-navy py-3 text-sm font-bold text-white hover:bg-navy-dark" type="submit">
+            {% if is_login %}Ingresar{% elif is_edit %}Guardar cambios{% else %}Crear cuenta{% endif %}
+        </button>
+    </form>
+
+    <p class="mt-5 text-center text-sm text-slate-500">
+        {% if is_login %}
+        ¿Aún no tienes cuenta?
+        <a href="{{ url_for('auth.register') }}" class="font-bold text-field-dark hover:underline">Crear cuenta</a>
+        {% elif is_edit %}
+        <a href="{{ url_for('auth.account') }}" class="font-bold text-field-dark hover:underline">Volver a mi cuenta</a>
+        {% else %}
+        ¿Ya tienes cuenta?
+        <a href="{{ url_for('login.login') }}" class="font-bold text-field-dark hover:underline">Inicia sesión</a>
+        {% endif %}
+    </p>
+</section>
+{% endblock %}

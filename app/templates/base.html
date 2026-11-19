@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Miramar Hotel Boutique: habitaciones con vista al mar, desayuno incluido y descanso frente al Pacífico en Huanchaco, Trujillo.{% endblock %}">
+    <title>{% block title %}Miramar Hotel Boutique | Huanchaco{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css', v='hotel-1') }}">
+    <script>
+        (function () {
+            // Las animaciones de scroll solo se activan con JS y sin 'reducir movimiento'.
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+            var root = document.documentElement;
+            root.classList.add('anim-ready');
+            // Red de seguridad: si animaciones.js no carga, el contenido no debe quedar oculto.
+            window.setTimeout(function () { if (!window.__animReady) { root.classList.remove('anim-ready'); } }, 4000);
+        })();
+    </script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-paper text-slate-800 font-sans antialiased">
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+    <header data-site-header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div class="mx-auto flex h-[76px] max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+            <a href="{{ url_for('home.index') }}" class="flex min-w-0 items-center gap-3" aria-label="Miramar Hotel Boutique, inicio">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy text-lime-200">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                        <path d="M2 18c2.2 0 2.8-1.6 5-1.6s2.8 1.6 5 1.6 2.8-1.6 5-1.6 2.8 1.6 5 1.6"/>
+                        <path d="M4 14c2 0 2.6-1.4 4.6-1.4S11.2 14 13.2 14s2.6-1.4 4.6-1.4" opacity=".65"/>
+                        <circle cx="16.5" cy="6.5" r="3" stroke-width="1.5"/>
+                        <path d="M3 10.5 5 7l2.6 3.5" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="min-w-0 leading-none">
+                    <strong class="block truncate font-display text-xl font-semibold tracking-[0.06em] text-navy">Miramar</strong>
+                    <small class="mt-1 block truncate text-[9px] font-semibold tracking-[0.3em] text-slate-500">HOTEL BOUTIQUE</small>
+                </span>
+            </a>
+
+            <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+                <a href="{{ url_for('home.index') }}"
+                   class="rounded-xl px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 hover:bg-slate-100 {% if request.path == '/' %}bg-slate-100 text-navy{% else %}text-slate-500 hover:text-navy{% endif %}">Inicio</a>
+                <a href="{{ url_for('products.products') }}"
+                   class="rounded-xl px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 hover:bg-slate-100 {% if '/habitaciones' in request.path %}bg-slate-100 text-navy{% else %}text-slate-500 hover:text-navy{% endif %}">Habitaciones</a>
+                <a href="{{ url_for('contact.contact') }}"
+                   class="rounded-xl px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors duration-200 hover:bg-slate-100 {% if '/contacto' in request.path %}bg-slate-100 text-navy{% else %}text-slate-500 hover:text-navy{% endif %}">Contacto</a>
+            </nav>
+
+            <div class="hidden items-center gap-2 lg:flex">
+                <a href="{{ url_for('contact.contact') }}#reserva" class="rounded-full bg-navy px-6 py-3 text-[11px] font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-navy-dark hover:shadow-lg">Reservar ahora <span aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="flex shrink-0 items-center gap-1 lg:hidden">
+                <button id="menu-btn" type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-lg leading-none text-navy transition hover:bg-slate-50" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-nav">☰</button>
+            </div>
+        </div>
+
+        <nav id="mobile-nav" class="hidden border-t border-slate-100 bg-white px-6 py-4 lg:hidden" aria-label="Menú móvil">
+            <div class="flex flex-col gap-1 text-sm font-semibold">
+                <a href="{{ url_for('home.index') }}" class="rounded-lg px-3 py-2.5 hover:bg-slate-50">Inicio</a>
+                <a href="{{ url_for('products.products') }}" class="rounded-lg px-3 py-2.5 hover:bg-slate-50">Habitaciones</a>
+                <a href="{{ url_for('contact.contact') }}" class="rounded-lg px-3 py-2.5 hover:bg-slate-50">Contacto</a>
+                <a href="{{ url_for('contact.contact') }}#reserva" class="mt-2 rounded-full bg-navy px-5 py-3 text-center text-white">Reservar ahora →</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(category_filter=["ok"]) %}
+          {% if messages %}
+          <div class="mx-auto max-w-6xl px-6 pt-6">
+            {% for message in messages %}
+            <div class="rounded-xl bg-emerald-50 p-4 text-sm text-emerald-800" data-notification role="status" aria-live="polite">{{ message }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-navy text-white">
+        <div class="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-4">
+            <div class="md:col-span-2">
+                <p class="flex items-center gap-2 font-display text-2xl"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-lime-200 text-base text-navy">✦</span> Miramar</p>
+                <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/70">Un hotel boutique frente al mar en Huanchaco. Habitaciones luminosas, desayuno artesanal y atardeceres que se quedan contigo.</p>
+                <div class="mt-5 flex gap-2">
+                    <a href="#" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20">◎</a>
+                    <a href="#" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20">f</a>
+                    <a href="https://wa.me/51949218640?text=Hola%20Miramar%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2A9.96 9.96 0 0 0 3.18 18.88L2 22l3.2-1.14A9.96 9.96 0 1 0 12.04 2zm5.83 14.16c-.25.7-1.44 1.33-1.99 1.41-.51.07-1.17.1-1.88-.12-.44-.13-1-.33-1.73-.64-3.04-1.31-5.03-4.39-5.18-4.6-.15-.2-1.23-1.64-1.23-3.13s.78-2.22 1.05-2.52c.27-.3.6-.38.8-.38h.58c.19 0 .44-.07.68.51.25.59.84 2.06.91 2.2.08.14.13.32.03.52-.1.2-.15.32-.3.5-.15.18-.32.4-.45.53-.15.15-.3.32-.13.62.17.3.76 1.26 1.63 2.04.53.33.8.92 1.08 1.34.2.3.42.25.7.18.28-.08 1.8-.85 2.11-1.31.15-.51.23-.59.35-.07.13.07.75-.18 1.45z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white/60">Explora</h3>
+                <ul class="mt-4 space-y-2.5 text-sm">
+                    <li><a class="hover:underline" href="{{ url_for('home.index') }}">Inicio</a></li>
+                    <li><a class="hover:underline" href="{{ url_for('products.products') }}">Habitaciones</a></li>
+                    <li><a class="hover:underline" href="{{ url_for('contact.contact') }}">Contacto</a></li>
+                    <li><a class="hover:underline" href="{{ url_for('contact.contact') }}#reserva">Reservar</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-white/60">Contacto</h3>
+                <ul class="mt-4 space-y-2.5 text-sm text-white/85">
+                    <li>📍 Av. La Rivera 245, Huanchaco, Trujillo</li>
+                    <li>📞 +51 949 218 640</li>
+                    <li>📧 reservas@miramarhotel.pe</li>
+                    <li><a class="text-lime-200 hover:underline" href="{{ url_for('contact.contact') }}#reserva">Consultar disponibilidad →</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-white/15">
+            <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-5 text-xs text-white/60 sm:flex-row">
+                <p>© 2026 Miramar Hotel Boutique · Huanchaco, Perú</p>
+                <p>Descanso frente al mar.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toastContainer" aria-live="polite" class="pointer-events-none fixed right-5 top-24 z-[60] flex w-[min(320px,calc(100vw-2rem))] flex-col gap-3"></div>
+    <button type="button" data-scroll-top class="fixed bottom-24 right-5 z-50 hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-lg text-navy shadow-lg transition hover:-translate-y-0.5" aria-label="Volver arriba">↑</button>
+    <a href="https://wa.me/51949218640?text=Hola%20Miramar%2C%20quiero%20consultar%20disponibilidad"
+       class="whatsapp-float fixed z-50 flex items-center justify-center rounded-full bg-[#25d366] p-3.5 text-2xl text-white shadow-xl hover:scale-105"
+       style="height:52px;width:52px" aria-label="Escríbenos por WhatsApp"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2A9.96 9.96 0 0 0 3.18 18.88L2 22l3.2-1.14A9.96 9.96 0 1 0 12.04 2zm5.83 14.16c-.25.7-1.44 1.33-1.99 1.41-.51.07-1.17.1-1.88-.12-.44-.13-1-.33-1.73-.64-3.04-1.31-5.03-4.39-5.18-4.6-.15-.2-1.23-1.64-1.23-3.13s.78-2.22 1.05-2.52c.27-.3.6-.38.8-.38h.58c.19 0 .44-.07.68.51.25.59.84 2.06.91 2.2.08.14.13.32.03.52-.1.2-.15.32-.3.5-.15.18-.32.4-.45.53-.15.15-.3.32-.13.62.17.3.76 1.26 1.63 2.04.53.33.8.92 1.08 1.34.2.3.42.25.7.18.28-.08 1.8-.85 2.11-1.31.15-.51.23-.59.35-.07.13.07.75-.18 1.45z"/></svg></a>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        menuBtn?.addEventListener('click', () => {
+            const open = mobileNav.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!open));
+            menuBtn.setAttribute('aria-label', open ? 'Abrir menú' : 'Cerrar menú');
+        });
+
+        mobileNav?.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.add('hidden');
+                menuBtn?.setAttribute('aria-expanded', 'false');
+                menuBtn?.setAttribute('aria-label', 'Abrir menú');
+            });
+        });
+    </script>
+    <script defer src="{{ url_for('static', filename='js/functionality-ui.js', v='hotel-1') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/main.js', v='hotel-1') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/animations.js', v='hotel-1') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
